@@ -4,7 +4,7 @@ import {b_cdk, b_dynamodb, b_lambda} from '@tcbenkhard/benkhard-cdk'
 
 export class MoneyBenkhardComStack extends b_cdk.Stack {
   constructor(scope: Construct, id: string) {
-    super(scope, id, 'auth-benkhard-com');
+    super(scope, id, 'money-benkhard-com');
 
     const authorizerHandlerArn = aws_ssm.StringParameter.valueForStringParameter(this, '/benkhard/auth/lambda-authorizer-arn')
     const authorizerHandler = aws_lambda.Function.fromFunctionArn(this, 'AuthorizerHandler', authorizerHandlerArn)

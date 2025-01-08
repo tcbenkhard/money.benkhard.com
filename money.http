@@ -1,0 +1,11 @@
+### Login
+POST https://{{ authUrl}}/oauth/authorize
+Authorization: Basic dGNiZW5raGFyZEBnbWFpbC5jb206MTIzNDU2Nzg=
+
+let responseBody = pm.response.json()
+
+### GET request to example server
+GET https://{{ baseUrl }}/profile
+Authorization: Bearer {{token}}
+
+###
