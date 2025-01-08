@@ -1,5 +1,4 @@
 import {z} from "zod";
-import {DocumentClient} from "aws-sdk/clients/dynamodb";
 
 export const CreateProfileRequestSchema = z.object({
     displayName: z.string(),
@@ -15,14 +14,14 @@ export const GetProfileRequestSchema = z.object({
 export type GetProfileRequest = z.infer<typeof GetProfileRequestSchema>
 
 export class Profile {
-    displayName: string
     email: string
+    displayName: string
     createdOn: string
 
 
     constructor(email: string, displayName: string, createdOn: string) {
-        this.displayName = displayName;
         this.email = email;
+        this.displayName = displayName;
         this.createdOn = createdOn;
     }
 

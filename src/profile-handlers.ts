@@ -1,7 +1,13 @@
 import {BaseHandler} from "@tcbenkhard/aws-utils/dist/lambda";
 import {APIGatewayProxyEvent} from "aws-lambda";
 import {parseBody} from "@tcbenkhard/aws-utils";
-import {CreateProfileRequest, GetProfileRequest, GetProfileRequestSchema, Profile} from "./model/profile";
+import {
+    CreateProfileRequest,
+    CreateProfileRequestSchema,
+    GetProfileRequest,
+    GetProfileRequestSchema,
+    Profile
+} from "./model/profile";
 import {MoneyService} from "./service/money-service";
 
 /*
@@ -33,9 +39,8 @@ export class CreateProfileHandler extends BaseHandler<CreateProfileRequest, Prof
         super();
     }
 
-
     parseEvent(event: APIGatewayProxyEvent): Promise<CreateProfileRequest> {
-        return parseBody(event.body, GetProfileRequestSchema, {
+        return parseBody(event.body, CreateProfileRequestSchema, {
             email: event.requestContext.authorizer!.user
         })
     }

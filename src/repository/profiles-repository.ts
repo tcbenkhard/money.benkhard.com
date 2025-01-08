@@ -24,7 +24,7 @@ export class ProfilesRepository {
     }
 
     async createProfile(profile: Profile) {
-        const result = await this.dynamodb.put({
+        await this.dynamodb.put({
             TableName: this.tableName,
             Item: profile,
             ConditionExpression: 'attribute_not_exists(email)'
