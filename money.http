@@ -2,6 +2,15 @@
 POST https://{{ authUrl}}/oauth/authorize
 Authorization: Basic dGNiZW5raGFyZEBnbWFpbC5jb206MTIzNDU2Nzg=
 
-### GET request to example server
+### Get profile
 GET https://{{ baseUrl }}/profile
 Authorization: Bearer {{ token }}
+
+### Create profile
+POST https://{{ baseUrl }}/profile
+Authorization: Bearer {{ token }}
+Content-Type: application/json
+
+{
+  "name": "Timo Benkhard"
+}

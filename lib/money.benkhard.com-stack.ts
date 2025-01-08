@@ -56,6 +56,6 @@ export class MoneyBenkhardComStack extends b_cdk.Stack {
 
     const profileResource = apigw.root.addResource('profile')
     profileResource.addMethod('GET', new aws_apigateway.LambdaIntegration(getProfileHandler), authorizerConfig)
-    profileResource.addMethod('POST', new aws_apigateway.LambdaIntegration(getProfileHandler), authorizerConfig)
+    profileResource.addMethod('POST', new aws_apigateway.LambdaIntegration(createProfileHandler), authorizerConfig)
   }
 }
