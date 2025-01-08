@@ -15,7 +15,7 @@ export class GetProfileHandler extends BaseHandler<GetProfileRequest, Profile> {
 
     async parseEvent(event: APIGatewayProxyEvent): Promise<GetProfileRequest> {
         return parseBody(event.body, GetProfileRequestSchema, {
-            owner: event.requestContext.authorizer!.user
+            email: event.requestContext.authorizer!.user
         })
     }
 
