@@ -1,4 +1,6 @@
 import {z} from "zod";
+import {DocumentClient} from "aws-sdk/clients/dynamodb";
+import {v4 as uuidv4} from "uuid";
 
 export const CreateAdministrationRequestSchema = z.object({
     name: z.string(),
@@ -23,7 +25,45 @@ const CreateGroupSchema = z.object({
 })
 
 export class Administration {
-    private name: string
-    private owner: string
-    private id: string
+    static PREFIX = "admin#"
+    name: string
+    owner: string
+    id: string
+    createdOn: string
+
+    constructor(name: string, owner: string, id: string, createdOn: string) {
+        this.name = name;
+        this.owner = owner;
+        this.id = id;
+        this.createdOn = createdOn;
+    }
+
+    toItem() {
+        return {
+            pk: Administration.PREFIX + this.id,
+            sk: Administration.PREFIX + this.id,
+            name: this.name,
+            owner: this.owner,
+            id: this.id,
+            createdOn: this.createdOn,
+        }
+    }
+
+    static fromItem(item: DocumentClient.AttributeMap) {
+        return new this(
+            item.name,
+            item.owner,
+            item.id.slice(item.pk.indexOf('#')),
+            item.createdOn
+        )
+    }
+
+    static fromRequest(request: CreateAdministrationRequest) {
+        return new this(
+            request.name,
+            request.owner,
+            uuidv4(),
+            new Date().toISOString()
+        )
+    }
 }

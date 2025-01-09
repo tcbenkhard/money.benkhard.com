@@ -17,8 +17,21 @@ export class MoneyBenkhardComStack extends b_cdk.Stack {
       }
     })
 
+    const administrationTable = new b_dynamodb.Table(this, 'AdministrationTable', {
+      tableName: 'administration',
+      partitionKey: {
+        name: 'pk',
+        type: aws_dynamodb.AttributeType.STRING
+      },
+      sortKey: {
+        name: 'sk',
+        type: aws_dynamodb.AttributeType.STRING
+      }
+    })
+
     const environment = {
-      PROFILES_TABLE_NAME: profilesTable.tableName
+      PROFILES_TABLE_NAME: profilesTable.tableName,
+      ADMINISTRATION_TABLE_NAME: administrationTable.tableName,
     }
 
     const getProfileHandler = new b_lambda.NodejsFunction(this, 'GetProfileHandler', {
@@ -32,6 +45,13 @@ export class MoneyBenkhardComStack extends b_cdk.Stack {
       functionName: 'create-profile-handler',
       entry: 'src/handlers.ts',
       handler: 'createProfileHandler',
+      environment
+    })
+
+    const createAdministrationHandler = new b_lambda.NodejsFunction(this, 'CreateAdministrationHandler', {
+      functionName: 'create-administration-handler',
+      entry: 'src/handlers.ts',
+      handler: 'createAdministrationHandler',
       environment
     })
 
@@ -57,5 +77,8 @@ export class MoneyBenkhardComStack extends b_cdk.Stack {
     const profileResource = apigw.root.addResource('profile')
     profileResource.addMethod('GET', new aws_apigateway.LambdaIntegration(getProfileHandler), authorizerConfig)
     profileResource.addMethod('POST', new aws_apigateway.LambdaIntegration(createProfileHandler), authorizerConfig)
+
+    const administrationResource = apigw.root.addResource('administration')
+    administrationResource.addMethod('POST', new aws_apigateway.LambdaIntegration(createAdministrationHandler), authorizerConfig)
   }
 }
