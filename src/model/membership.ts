@@ -1,5 +1,6 @@
 import {DocumentClient} from "aws-sdk/clients/dynamodb";
 import {Administration} from "./administration";
+import {stripPrefix} from "../utils/string";
 
 export class Membership {
     static PREFIX = "memb#"
@@ -40,13 +41,13 @@ export class Membership {
 
     static fromUserItem(i: DocumentClient.AttributeMap) {
         return new Membership(
-            i.sk.slice(i.sk.indexOf('#')), i.pk.slice(i.pk.indexOf('#')), i.createdOn, i.createdBy, i.role
+            stripPrefix(i.sk), stripPrefix(i.pk), i.createdOn, i.createdBy, i.role
         )
     }
 
     static fromAdministrationItem(i: DocumentClient.AttributeMap) {
         return new Membership(
-            i.pk.slice(i.pk.indexOf('#')), i.sk.slice(i.sk.indexOf('#')), i.createdOn, i.createdBy, i.role
+            stripPrefix(i.pk), stripPrefix(i.sk), i.createdOn, i.createdBy, i.role
         )
     }
 

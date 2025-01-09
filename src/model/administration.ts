@@ -1,6 +1,7 @@
 import {z} from "zod";
 import {DocumentClient} from "aws-sdk/clients/dynamodb";
 import {v4 as uuidv4} from "uuid";
+import {stripPrefix} from "../utils/string";
 
 export const CreateAdministrationRequestSchema = z.object({
     name: z.string(),
@@ -59,7 +60,7 @@ export class Administration {
         return new Administration(
             item.name,
             item.owner,
-            item.id.slice(item.pk.indexOf('#')),
+            stripPrefix(item.id),
             item.createdOn
         )
     }
