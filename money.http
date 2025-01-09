@@ -14,3 +14,12 @@ Content-Type: application/json
 {
   "displayName": "Timo Benkhard"
 }
+
+### Create administration
+POST https://{{ baseUrl }}/administration
+Authorization: Bearer {{ token }}
+Content-Type: application/json
+
+{
+  "name": "The new world"
+}
