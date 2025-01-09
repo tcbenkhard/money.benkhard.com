@@ -26,7 +26,7 @@ export class Profile {
     }
 
     static fromCreateProfileRequest(request: CreateProfileRequest) {
-        return new this(
+        return new Profile(
             request.email,
             request.displayName,
             new Date().toISOString()

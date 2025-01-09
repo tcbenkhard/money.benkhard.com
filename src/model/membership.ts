@@ -39,13 +39,13 @@ export class Membership {
     }
 
     static fromUserItem(i: DocumentClient.AttributeMap) {
-        return new this(
+        return new Membership(
             i.sk.slice(i.sk.indexOf('#')), i.pk.slice(i.pk.indexOf('#')), i.createdOn, i.createdBy, i.role
         )
     }
 
     static fromAdministrationItem(i: DocumentClient.AttributeMap) {
-        return new this(
+        return new Membership(
             i.pk.slice(i.pk.indexOf('#')), i.sk.slice(i.sk.indexOf('#')), i.createdOn, i.createdBy, i.role
         )
     }

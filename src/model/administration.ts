@@ -56,7 +56,7 @@ export class Administration {
     }
 
     static fromItem(item: DocumentClient.AttributeMap) {
-        return new this(
+        return new Administration(
             item.name,
             item.owner,
             item.id.slice(item.pk.indexOf('#')),
@@ -65,7 +65,7 @@ export class Administration {
     }
 
     static fromRequest(request: CreateAdministrationRequest) {
-        return new this(
+        return new Administration(
             request.name,
             request.owner,
             uuidv4(),
