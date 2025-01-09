@@ -44,7 +44,8 @@ export class Invitation {
             sk: `${Administration.PREFIX}${this.administration}`,
             createdBy: this.createdBy,
             createdOn: this.createdOn,
-            user: this.email
+            user: this.email,
+            role: this.role,
         }
     }
 

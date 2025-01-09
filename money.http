@@ -1,6 +1,6 @@
 ### Login
 POST https://{{ authUrl}}/oauth/authorize
-Authorization: Basic dGNiZW5raGFyZEBnbWFpbC5jb206MTIzNDU2Nzg=
+Authorization: Basic {{ basic }}
 
 ### Get profile
 GET https://{{ baseUrl }}/profile
@@ -28,3 +28,14 @@ Content-Type: application/json
 GET https://{{ baseUrl }}/administration
 Authorization: Bearer {{ token }}
 Content-Type: application/json
+
+### Invite tcbenkhard from tcbenkhard2
+POST https://{{ baseUrl }}/invitation
+Authorization: Bearer {{ token }}
+Content-Type: application/json
+
+{
+  "user": "tcbenkhard@gmail.com",
+  "administration": "4e509126-3fce-4b1b-8a08-0d389e3faba3",
+  "role": "EDITOR"
+}
