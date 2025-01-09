@@ -92,8 +92,10 @@ export class AdministrationRepository {
                 ':sk': `${Administration.PREFIX}`,
             }
         }).promise()
+        console.info(`Found ${membershipResults.Count} memberships for email ${email}`)
         if (!membershipResults.Items) return []
         const memberships = membershipResults.Items.map(Membership.fromUserItem)
+        console.info(`Getting administrations for memberships: [${memberships.map(m => m.toString()).join(', ')}]`)
         const administrationResults = await this.dynamodb.batchGet({
             RequestItems: {
                 [this.tableName]: {

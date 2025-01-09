@@ -49,4 +49,8 @@ export class Membership {
             i.pk.slice(i.pk.indexOf('#')), i.sk.slice(i.sk.indexOf('#')), i.createdOn, i.createdBy, i.role
         )
     }
+
+    toString() {
+        return `Membership{administration=${this.administration}, user=${this.user}, createdOn=${this.createdOn}, createdBy=${this.createdBy}, role=${this.role}}`
+    }
 }
