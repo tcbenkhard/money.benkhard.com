@@ -2,6 +2,7 @@ import {DocumentClient} from "aws-sdk/clients/dynamodb";
 import {getEnv, ServerError} from "@tcbenkhard/aws-utils";
 import {Membership} from "../model/membership";
 import {Administration} from "../model/administration";
+import {Invitation} from "../model/invitation";
 
 /*
 * The keys in this table are:
@@ -30,6 +31,37 @@ export class AdministrationRepository {
                         }
                     }
                 ]
+            }
+        }).promise()
+    }
+
+    async getInvitation(email: string, administration: string) {
+        const result = await this.dynamodb.get({
+            TableName: this.tableName,
+            Key: {
+                pk: `${Invitation.PREFIX}${email}`,
+                sk: `${Administration.PREFIX}${administration}`,
+            }
+        }).promise()
+
+        if(!result.Item) throw ServerError.notFound("INVITATION_NOT_FOUND", "The requested invitation does not exist.")
+        return Invitation.fromItem(result.Item)
+    }
+
+    async createInvitation(invitation: Invitation) {
+        await this.dynamodb.put({
+            TableName: this.tableName,
+            Item: invitation.toItem(),
+            ConditionExpression: 'attribute_not_exists(pk)'
+        }).promise()
+    }
+
+    async removeInvitation(invitation: Invitation) {
+        await this.dynamodb.delete({
+            TableName: this.tableName,
+            Key: {
+                pk: `${Invitation.PREFIX}${invitation.email}`,
+                sk: `${Administration.PREFIX}${invitation.administration}`,
             }
         }).promise()
     }
@@ -84,17 +116,9 @@ export class AdministrationRepository {
     }
 
     async listAdministrationsForEmail(email: string) {
-        const membershipResults = await this.dynamodb.query({
-            TableName: this.tableName,
-            KeyConditionExpression: 'pk = :pk and begins_with(sk, :sk)',
-            ExpressionAttributeValues: {
-                ':pk': `${Membership.PREFIX}${email}`,
-                ':sk': `${Administration.PREFIX}`,
-            }
-        }).promise()
-        console.info(`Found ${membershipResults.Count} memberships for email ${email}`)
-        if (!membershipResults.Items) return []
-        const memberships = membershipResults.Items.map(Membership.fromUserItem)
+        const memberships = await this.getMembershipsForEmail(email)
+        console.info(`Found ${memberships.length} memberships for email ${email}`)
+        if (!memberships.length) return []
         console.info(`Getting administrations for memberships: [${memberships.map(m => m.toString()).join(', ')}]`)
         const administrationResults = await this.dynamodb.batchGet({
             RequestItems: {

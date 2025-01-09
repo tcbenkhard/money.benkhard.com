@@ -36,7 +36,7 @@ export class GetProfileHandler extends BaseHandler<GetProfileRequest, Profile> {
  * */
 export class CreateProfileHandler extends BaseHandler<CreateProfileRequest, Profile> {
     constructor(private service: MoneyService) {
-        super();
+        super(201);
     }
 
     parseEvent(event: APIGatewayProxyEvent): Promise<CreateProfileRequest> {

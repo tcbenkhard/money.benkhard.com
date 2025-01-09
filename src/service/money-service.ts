@@ -2,7 +2,8 @@ import {ProfilesRepository} from "../repository/profiles-repository";
 import {CreateProfileRequest, GetProfileRequest, Profile} from "../model/profile";
 import {Administration, CreateAdministrationRequest, ListAdministrationsRequest} from "../model/administration";
 import {AdministrationRepository} from "../repository/administration-repository";
-import {Membership} from "../model/membership";
+import {Membership, MembershipRole} from "../model/membership";
+import {InvitationRequest, CreateInvitationRequest, Invitation} from "../model/invitation";
 
 export class MoneyService {
     constructor(private profilesRepository: ProfilesRepository, private administrationRepository: AdministrationRepository) {}
@@ -27,7 +28,7 @@ export class MoneyService {
 
     async createAdministration(request: CreateAdministrationRequest) {
         const administration = Administration.fromRequest(request)
-        const membership = new Membership(administration.id, request.owner, new Date().toISOString(), request.owner, 'OWNER')
+        const membership = new Membership(administration.id, request.owner, new Date().toISOString(), request.owner, MembershipRole.OWNER)
         await Promise.all([
             this.administrationRepository.createAdministration(administration),
             this.administrationRepository.createMembership(membership)
@@ -37,6 +38,25 @@ export class MoneyService {
 
     async listAdministrationsForUser(request: ListAdministrationsRequest) {
         return await this.administrationRepository.listAdministrationsForEmail(request.email)
+    }
+
+    async inviteUserToAdministration(request: CreateInvitationRequest) {
+        const invitation = Invitation.fromRequest(request)
+        await this.administrationRepository.createInvitation(invitation)
+    }
+
+    async acceptInvitation(request: InvitationRequest) {
+        const invitation = await this.administrationRepository.getInvitation(request.user, request.administration)
+        const membership = invitation.toMembership()
+        await Promise.all([
+            this.administrationRepository.createMembership(membership),
+            this.administrationRepository.removeInvitation(invitation)
+        ])
+    }
+
+    async declineInvitation(request: InvitationRequest) {
+        const invitation = await this.administrationRepository.getInvitation(request.user, request.administration)
+        await this.administrationRepository.removeInvitation(invitation)
     }
 }
 

@@ -2,16 +2,19 @@ import {DocumentClient} from "aws-sdk/clients/dynamodb";
 import {Administration} from "./administration";
 import {stripPrefix} from "../utils/string";
 
+export enum MembershipRole {
+    OWNER="OWNER", EDITOR="EDITOR", VIEWER="VIEWER"
+}
+
 export class Membership {
     static PREFIX = "memb#"
     administration: string
     user: string
     createdOn: string
     createdBy: string
-    role: 'OWNER'|'EDITOR'|'VIEWER'
+    role: MembershipRole
 
-
-    constructor(administration: string, user: string, createdOn: string, createdBy: string, role: "OWNER" | "EDITOR" | "VIEWER") {
+    constructor(administration: string, user: string, createdOn: string, createdBy: string, role: MembershipRole) {
         this.administration = administration;
         this.user = user;
         this.createdOn = createdOn;

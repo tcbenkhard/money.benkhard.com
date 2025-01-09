@@ -3,7 +3,8 @@ import {
     Administration,
     CreateAdministrationRequest,
     CreateAdministrationRequestSchema,
-    ListAdministrationsRequest, ListAdministrationsRequestSchema
+    ListAdministrationsRequest,
+    ListAdministrationsRequestSchema
 } from "./model/administration";
 import {APIGatewayProxyEvent} from "aws-lambda";
 import {parseBody} from "@tcbenkhard/aws-utils";
@@ -14,7 +15,7 @@ import {MoneyService} from "./service/money-service";
 * */
 export class CreateAdministrationHandler extends BaseHandler<CreateAdministrationRequest, Administration> {
     constructor(private service: MoneyService) {
-        super();
+        super(201);
     }
 
     async parseEvent(event: APIGatewayProxyEvent): Promise<CreateAdministrationRequest> {

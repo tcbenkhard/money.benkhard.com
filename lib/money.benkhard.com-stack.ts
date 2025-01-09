@@ -62,6 +62,20 @@ export class MoneyBenkhardComStack extends b_cdk.Stack {
       environment
     })
 
+    const createInvitationHandler = new b_lambda.NodejsFunction(this, 'CreateInvitationHandler', {
+      functionName: 'create-invitation-handler',
+      entry: 'src/handlers.ts',
+      handler: 'createInvitationHandler',
+      environment
+    })
+
+    const acceptInvitationHandler = new b_lambda.NodejsFunction(this, 'AcceptInvitationHandler', {
+      functionName: 'accept-invitation-handler',
+      entry: 'src/handlers.ts',
+      handler: 'acceptInvitationHandler',
+      environment
+    })
+
     const apigw = new aws_apigateway.RestApi(this, 'ApiGateway', {
       restApiName: 'money.benkhard.com',
       description: 'Money administration api',
@@ -88,5 +102,13 @@ export class MoneyBenkhardComStack extends b_cdk.Stack {
     const administrationResource = apigw.root.addResource('administration')
     administrationResource.addMethod('POST', new aws_apigateway.LambdaIntegration(createAdministrationHandler), authorizerConfig)
     administrationResource.addMethod('GET', new aws_apigateway.LambdaIntegration(listAdministrationsHandler), authorizerConfig)
+
+    const invitationResource = apigw.root.addResource('invitation')
+    const invitationDetailResource = invitationResource.addResource('{administrationId}')
+    const invitationAcceptResource = invitationDetailResource.addResource('accept')
+    const invitationRejectResource = invitationDetailResource.addResource('reject')
+
+    invitationResource.addMethod('POST', new aws_apigateway.LambdaIntegration(createInvitationHandler), authorizerConfig)
+    invitationAcceptResource.addMethod('POST', new aws_apigateway.LambdaIntegration(acceptInvitationHandler), authorizerConfig)
   }
 }
