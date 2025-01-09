@@ -104,11 +104,11 @@ export class MoneyBenkhardComStack extends b_cdk.Stack {
     administrationResource.addMethod('GET', new aws_apigateway.LambdaIntegration(listAdministrationsHandler), authorizerConfig)
 
     const invitationResource = apigw.root.addResource('invitation')
-    // const invitationDetailResource = invitationResource.addResource('{administration}')
-    // const invitationAcceptResource = invitationDetailResource.addResource('accept')
-    // const invitationRejectResource = invitationDetailResource.addResource('reject')
-    //
-    // invitationResource.addMethod('POST', new aws_apigateway.LambdaIntegration(createInvitationHandler), authorizerConfig)
-    // invitationAcceptResource.addMethod('POST', new aws_apigateway.LambdaIntegration(acceptInvitationHandler), authorizerConfig)
+    const invitationDetailResource = invitationResource.addResource('{administration}')
+    const invitationAcceptResource = invitationDetailResource.addResource('accept')
+    const invitationRejectResource = invitationDetailResource.addResource('reject')
+
+    invitationResource.addMethod('POST', new aws_apigateway.LambdaIntegration(createInvitationHandler), authorizerConfig)
+    invitationAcceptResource.addMethod('POST', new aws_apigateway.LambdaIntegration(acceptInvitationHandler), authorizerConfig)
   }
 }
