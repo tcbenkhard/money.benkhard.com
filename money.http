@@ -23,3 +23,8 @@ Content-Type: application/json
 {
   "name": "The new world"
 }
+
+### List administrations
+GET https://{{ baseUrl }}/administration
+Authorization: Bearer {{ token }}
+Content-Type: application/json

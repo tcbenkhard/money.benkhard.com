@@ -59,6 +59,7 @@ export class MoneyBenkhardComStack extends b_cdk.Stack {
       functionName: 'list-administrations-handler',
       entry: 'src/handlers.ts',
       handler: 'listAdministrationsHandler',
+      environment
     })
 
     const apigw = new aws_apigateway.RestApi(this, 'ApiGateway', {
