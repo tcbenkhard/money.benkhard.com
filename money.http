@@ -12,5 +12,5 @@ Authorization: Bearer {{ token }}
 Content-Type: application/json
 
 {
-  "name": "Timo Benkhard"
+  "displayName": "Timo Benkhard"
 }
