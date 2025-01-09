@@ -12,7 +12,7 @@ Authorization: Bearer {{ token }}
 Content-Type: application/json
 
 {
-  "displayName": "Timo Benkhard"
+  "displayName": "Timo Benkhard 2"
 }
 
 ### Create administration
@@ -36,6 +36,13 @@ Content-Type: application/json
 
 {
   "user": "tcbenkhard@gmail.com",
-  "administration": "4e509126-3fce-4b1b-8a08-0d389e3faba3",
+  "administration": "8c921b07-6754-4158-8200-17852692d3b1",
   "role": "EDITOR"
 }
+
+### Accept invitation as tcbenkhard
+POST https://{{ baseUrl }}/invitation/8c921b07-6754-4158-8200-17852692d3b1/accept
+Authorization: Bearer {{ token }}
+Content-Type: application/json
+
+{}
