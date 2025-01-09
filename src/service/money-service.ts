@@ -1,6 +1,6 @@
 import {ProfilesRepository} from "../repository/profiles-repository";
 import {CreateProfileRequest, GetProfileRequest, Profile} from "../model/profile";
-import {Administration, CreateAdministrationRequest} from "../model/administration";
+import {Administration, CreateAdministrationRequest, ListAdministrationsRequest} from "../model/administration";
 import {AdministrationRepository} from "../repository/administration-repository";
 import {Membership} from "../model/membership";
 
@@ -33,6 +33,10 @@ export class MoneyService {
             this.administrationRepository.createMembership(membership)
         ])
         return administration
+    }
+
+    async listAdministrationsForUser(request: ListAdministrationsRequest) {
+        return await this.administrationRepository.listAdministrationsForEmail(request.email)
     }
 }
 

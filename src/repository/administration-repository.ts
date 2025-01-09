@@ -82,4 +82,29 @@ export class AdministrationRepository {
         if (!result.Item) throw ServerError.notFound("ADMINISTRATION_NOT_FOUND", "Administration does not exist: " + administration)
         return Administration.fromItem(result.Item)
     }
+
+    async listAdministrationsForEmail(email: string) {
+        const membershipResults = await this.dynamodb.query({
+            TableName: this.tableName,
+            KeyConditionExpression: 'pk = :pk and begins_with(sk, :sk)',
+            ExpressionAttributeValues: {
+                ':pk': `${Membership.PREFIX}${email}`,
+                ':sk': `${Administration.PREFIX}`,
+            }
+        }).promise()
+        if (!membershipResults.Items) return []
+        const memberships = membershipResults.Items.map(Membership.fromUserItem)
+        const administrationResults = await this.dynamodb.batchGet({
+            RequestItems: {
+                [this.tableName]: {
+                    Keys: memberships.map(membership => ({
+                        pk: `${Administration.PREFIX}${membership.administration}`,
+                        sk: `${Administration.PREFIX}${membership.administration}`,
+                    }))
+                }
+            }
+        }).promise()
+        if (!administrationResults.Responses) return []
+        return administrationResults.Responses[this.tableName]!.map(Administration.fromItem)
+    }
 }

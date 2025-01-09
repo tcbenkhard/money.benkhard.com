@@ -7,6 +7,12 @@ export const CreateAdministrationRequestSchema = z.object({
     owner: z.string(),
 })
 
+export const ListAdministrationsRequestSchema = z.object({
+    email: z.string()
+})
+
+export type ListAdministrationsRequest = z.infer<typeof ListAdministrationsRequestSchema>
+
 export type CreateAdministrationRequest = z.infer<typeof CreateAdministrationRequestSchema>
 
 const CreateMembershipSchema = z.object({

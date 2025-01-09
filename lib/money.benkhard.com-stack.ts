@@ -55,6 +55,12 @@ export class MoneyBenkhardComStack extends b_cdk.Stack {
       environment
     })
 
+    const listAdministrationsHandler = new b_lambda.NodejsFunction(this, 'ListAdministrationsHandler', {
+      functionName: 'list-administrations-handler',
+      entry: 'src/handlers.ts',
+      handler: 'listAdministrationsHandler',
+    })
+
     const apigw = new aws_apigateway.RestApi(this, 'ApiGateway', {
       restApiName: 'money.benkhard.com',
       description: 'Money administration api',
@@ -80,5 +86,6 @@ export class MoneyBenkhardComStack extends b_cdk.Stack {
 
     const administrationResource = apigw.root.addResource('administration')
     administrationResource.addMethod('POST', new aws_apigateway.LambdaIntegration(createAdministrationHandler), authorizerConfig)
+    administrationResource.addMethod('GET', new aws_apigateway.LambdaIntegration(listAdministrationsHandler), authorizerConfig)
   }
 }
