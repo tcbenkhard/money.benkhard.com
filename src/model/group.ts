@@ -15,11 +15,11 @@ export const CreateGroupRequestSchema = z.object({
 
 export type CreateGroupRequest = z.infer<typeof CreateGroupRequestSchema>
 
-export const GetGroupsRequestSchema = z.object({
+export const ListGroupsRequestSchema = z.object({
     administrationId: z.string()
 })
 
-export type GetGroupsRequest = z.infer<typeof GetGroupsRequestSchema>
+export type ListGroupsRequest = z.infer<typeof ListGroupsRequestSchema>
 
 export class Group {
     static PREFIX = "group#"
