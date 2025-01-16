@@ -110,7 +110,9 @@ export class MoneyBenkhardComStack extends b_cdk.Stack {
     administrationResource.addMethod('POST', new aws_apigateway.LambdaIntegration(createAdministrationHandler), authorizerConfig)
     administrationResource.addMethod('GET', new aws_apigateway.LambdaIntegration(listAdministrationsHandler), authorizerConfig)
     const administrationDetailResource = administrationResource.addResource('{administration}')
-    administrationDetailResource.addMethod('POST', new aws_apigateway.LambdaIntegration(createGroupHandler), authorizerConfig)
+
+    const groupResource = administrationDetailResource.addResource('groups')
+    groupResource.addMethod('POST', new aws_apigateway.LambdaIntegration(createGroupHandler), authorizerConfig)
 
     const invitationResource = apigw.root.addResource('invitation')
     const invitationDetailResource = invitationResource.addResource('{administration}')
