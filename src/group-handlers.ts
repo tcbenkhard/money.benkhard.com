@@ -15,7 +15,7 @@ export class CreateGroupHandler extends BaseHandler<CreateGroupRequest, Group> {
     async parseEvent(event: APIGatewayProxyEvent): Promise<CreateGroupRequest> {
         return parseBody(event.body, CreateGroupRequestSchema, {
             administrationId: event.pathParameters!.administration,
-            owner: event.requestContext.authorizer!.user
+            createdBy: event.requestContext.authorizer!.user
         })
     }
 

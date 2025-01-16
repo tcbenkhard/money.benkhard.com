@@ -49,3 +49,11 @@ Content-Type: application/json
 
 ### Create group
 POST https://{{ baseUrl }}/administration/8c921b07-6754-4158-8200-17852692d3b1/groups
+Authorization: Bearer {{ token }}
+Content-Type: application/json
+
+{
+  "name": "Inkomen",
+  "description": "All salaries and benefits",
+  "type": "INCOME"
+}
