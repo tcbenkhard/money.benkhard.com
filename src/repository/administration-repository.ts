@@ -3,6 +3,7 @@ import {getEnv, ServerError} from "@tcbenkhard/aws-utils";
 import {Membership} from "../model/membership";
 import {Administration} from "../model/administration";
 import {Invitation} from "../model/invitation";
+import {Group} from "../model/group";
 
 /*
 * The keys in this table are:
@@ -132,5 +133,14 @@ export class AdministrationRepository {
         }).promise()
         if (!administrationResults.Responses) return []
         return administrationResults.Responses[this.tableName]!.map(Administration.fromItem)
+    }
+
+    async createGroup(group: Group) {
+        const groupItem = group.toItem()
+        await this.dynamodb.put({
+            TableName: this.tableName,
+            Item: groupItem,
+            ConditionExpression: 'attribute_not_exists(pk)'
+        }).promise()
     }
 }
