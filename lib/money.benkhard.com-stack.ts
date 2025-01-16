@@ -83,6 +83,13 @@ export class MoneyBenkhardComStack extends b_cdk.Stack {
       environment
     })
 
+    const listGroupsHandler = new b_lambda.NodejsFunction(this, 'ListGroupsHandler', {
+      functionName: 'list-groups-handler',
+      entry: 'src/handlers.ts',
+      handler: 'listGroupsHandler',
+      environment
+    })
+
     const apigw = new aws_apigateway.RestApi(this, 'ApiGateway', {
       restApiName: 'money.benkhard.com',
       description: 'Money administration api',
@@ -113,6 +120,7 @@ export class MoneyBenkhardComStack extends b_cdk.Stack {
 
     const groupResource = administrationDetailResource.addResource('groups')
     groupResource.addMethod('POST', new aws_apigateway.LambdaIntegration(createGroupHandler), authorizerConfig)
+    groupResource.addMethod('GET', new aws_apigateway.LambdaIntegration(listGroupsHandler), authorizerConfig)
 
     const invitationResource = apigw.root.addResource('invitation')
     const invitationDetailResource = invitationResource.addResource('{administration}')

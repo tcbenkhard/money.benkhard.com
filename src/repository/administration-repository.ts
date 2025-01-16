@@ -143,4 +143,18 @@ export class AdministrationRepository {
             ConditionExpression: 'attribute_not_exists(pk)'
         }).promise()
     }
+
+    async listGroupsForAdministration(administrationId: string) {
+        const result = await this.dynamodb.query({
+            TableName: this.tableName,
+            KeyConditionExpression: 'pk = :pk and begins_with(sk, :sk)',
+            ExpressionAttributeValues: {
+                ':pk': `${Administration.PREFIX}${administrationId}`,
+                ':sk': `${Group.PREFIX}`,
+            }
+        }).promise()
+
+        if (!result.Items) return []
+        return result.Items.map(Group.fromItem) as Group[]
+    }
 }

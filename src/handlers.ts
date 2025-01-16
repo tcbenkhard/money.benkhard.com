@@ -5,7 +5,7 @@ import {APIGatewayProxyEvent, Context} from "aws-lambda";
 import {CreateAdministrationHandler, ListAdministrationsHandler} from "./administration-handlers";
 import {AdministrationRepository} from "./repository/administration-repository";
 import {AcceptInvitationHandler, CreateInvitationHandler} from "./invitation-handlers";
-import {CreateGroupHandler} from "./group-handlers";
+import {CreateGroupHandler, ListGroupsHandler} from "./group-handlers";
 
 /*
 Instances
@@ -24,7 +24,7 @@ const createInvitationHandlerInstance = new CreateInvitationHandler(moneyService
 const acceptInvitationHandlerInstance = new AcceptInvitationHandler(moneyService);
 
 const createGroupHandlerInstance = new CreateGroupHandler(moneyService);
-
+const listGroupsHandlerInstance = new ListGroupsHandler(moneyService)
 /*
 Handlers
  */
@@ -39,3 +39,4 @@ export const createInvitationHandler = async (event: APIGatewayProxyEvent, conte
 export const acceptInvitationHandler = async (event: APIGatewayProxyEvent, context: Context) => { return await acceptInvitationHandlerInstance.handle(event, context) }
 
 export const createGroupHandler = async (event: APIGatewayProxyEvent, context: Context) => { return await createGroupHandlerInstance.handle(event, context) }
+export const listGroupsHandler = async (event: APIGatewayProxyEvent, context: Context) => { return await listGroupsHandlerInstance.handle(event, context) }

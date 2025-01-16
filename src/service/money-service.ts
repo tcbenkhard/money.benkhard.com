@@ -4,7 +4,7 @@ import {Administration, CreateAdministrationRequest, ListAdministrationsRequest}
 import {AdministrationRepository} from "../repository/administration-repository";
 import {Membership, MembershipRole} from "../model/membership";
 import {InvitationRequest, CreateInvitationRequest, Invitation} from "../model/invitation";
-import {CreateGroupRequest, Group} from "../model/group";
+import {CreateGroupRequest, GetGroupsRequest, Group} from "../model/group";
 
 export class MoneyService {
     constructor(private profilesRepository: ProfilesRepository, private administrationRepository: AdministrationRepository) {}
@@ -64,6 +64,10 @@ export class MoneyService {
         const group = Group.fromRequest(request)
         await this.administrationRepository.createGroup(group)
         return group
+    }
+
+    async getGroups(request: GetGroupsRequest) {
+        return this.administrationRepository.listGroupsForAdministration(request.administrationId)
     }
 }
 

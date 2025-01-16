@@ -6,7 +6,7 @@ import {stripPrefix} from "../utils/string";
 import {v4 as uuidv4} from "uuid";
 
 export const CreateGroupRequestSchema = z.object({
-    administrationId: z.string().uuid(),
+    administrationId: z.string(),
     name: z.string(),
     description: z.string(),
     type: z.string(),
@@ -14,6 +14,12 @@ export const CreateGroupRequestSchema = z.object({
 })
 
 export type CreateGroupRequest = z.infer<typeof CreateGroupRequestSchema>
+
+export const GetGroupsRequestSchema = z.object({
+    administrationId: z.string()
+})
+
+export type GetGroupsRequest = z.infer<typeof GetGroupsRequestSchema>
 
 export class Group {
     static PREFIX = "group#"
